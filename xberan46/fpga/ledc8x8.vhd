@@ -50,7 +50,7 @@ begin
 		end if;		
 	end process timer;
 
-	CE <= '1' when (CE_COUNT(7) = '1') else '0';  --mozna CE_COUNT(0) -zkusit
+	CE <= '1' when (CE_COUNT = "11111111") else '0';  --mozna CE_COUNT(0) -zkusit
 
 
 	change_row: procces(RESET, CE)
