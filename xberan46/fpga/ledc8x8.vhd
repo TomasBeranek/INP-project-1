@@ -53,11 +53,11 @@ begin
 	CE <= '1' when (CE_COUNT = "11111111") else '0';  --mozna CE_COUNT(0) -zkusit
 
 
-	change_row: procces(RESET, CE)
+	change_row: procces(RESET, CE)		--mozna bude potreba pouzit jeste SMCLK a synchronizovat 
 	begin
 		if (RESET = '1') then
 			ROW_TMP <= "10000000"
-		elsif (CE'event) and (CE = '1') then
+		elsif CE = '1' then
 			ROW_TMP <= ROW_TMP(7) & ROW_TMP(0 to 6);
 		end if;
 	end process active_row;
