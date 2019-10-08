@@ -23,6 +23,7 @@ architecture main of ledc8x8 is
 	signal TIME_COUNT : integer; 			--minimalne frekvence (1s) muze byt i promenna
 	signal CE_COUNT : std_logic_vector(7 downto 0);
 	signal CE : std_logic := '0';
+	signal ROW_TMP : std_logic_vector(0 to 7);
 
 begin
 
@@ -49,25 +50,26 @@ begin
 		end if;		
 	end process timer;
 
-	CE <= '1' when (CE_COUNT = "11111111") else '0';
+	CE <= '1' when (CE_COUNT(7) = '1') else '0';  --mozna CE_COUNT(0) -zkusit
 
 
 	change_row: procces(RESET, CE)
 	begin
 		if (RESET = '1') then
-			ROW <= "10000000"
+			ROW_TMP <= "10000000"
 		elsif (CE'event) and (CE = '1') then
-			ROW <= ROW(7) & ROW(0 to 6);
+			ROW_TMP <= ROW_TMP(7) & ROW_TMP(0 to 6);
 		end if;
 	end process active_row;
 	
+	ROW <= ROW_TMP;
 
-	active_leds: procces (ROW)
+	active_leds: procces (ROW_TMP)
 	begin
 		if (FIRST_TICK = '1') and (SECOND_TICK = '0') then
 			LED <= "00000000";
 		else
-			with ROW select
+			with ROW_TMP select
 				LED <= "11111110" when "10000000",
 				  	"00101001" when "01000000",
 				  	"00101001" when "00100000",
