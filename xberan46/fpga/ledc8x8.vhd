@@ -27,7 +27,7 @@ architecture main of ledc8x8 is
 
 begin
 
-	timer: procces(RESET, SMCLK)
+	timer: process(RESET, SMCLK)
 	begin
 		if RESET = '1' then
 			FIRST_TICK <= '0';
