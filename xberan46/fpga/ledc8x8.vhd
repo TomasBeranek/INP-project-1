@@ -66,7 +66,7 @@ begin
 	
 	ROW <= ROW_TMP;
 
-	active_leds: procces (ROW_TMP)
+	active_leds: proces (ROW_TMP)
 	begin
 		if (FIRST_TICK = '1') and (SECOND_TICK = '0') then
 			LED <= "00000000";
