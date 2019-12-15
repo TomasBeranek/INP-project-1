@@ -53,7 +53,7 @@ begin
 	CE <= '1' when (CE_COUNT = "11111111") else '0';  --mozna CE_COUNT(0) -zkusit
 
 
-	change_row: procces(RESET, CE, SMCLK)		--mozna bude potreba pouzit jeste SMCLK a synchronizovat 
+	change_row: process(RESET, CE, SMCLK)		--mozna bude potreba pouzit jeste SMCLK a synchronizovat 
 	begin
 		if (SMCLK'event) and (SMCLK = '1') then
 			if (RESET = '1') then
@@ -66,7 +66,7 @@ begin
 	
 	ROW <= ROW_TMP;
 
-	active_leds: proces (ROW_TMP)
+	active_leds: process (ROW_TMP)
 	begin
 		if (FIRST_TICK = '1') and (SECOND_TICK = '0') then
 			LED <= "00000000";
