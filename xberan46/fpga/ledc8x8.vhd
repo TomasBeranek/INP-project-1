@@ -24,10 +24,11 @@ architecture main of ledc8x8 is
 	signal CE_COUNT : std_logic_vector(7 downto 0);
 	signal CE : std_logic := '0';
 	signal ROW_TMP : std_logic_vector(0 to 7);
+	signal LED_TMP : std_logic_vector(0 to 7) := "11111111";
 
 begin
 
-	timer: process(RESET, SMCLK)
+	timer: process (RESET, SMCLK)
 	begin
 		if RESET = '1' then
 			FIRST_TICK <= '0';
@@ -53,16 +54,16 @@ begin
 	CE <= '1' when (CE_COUNT = "11111111") else '0';  --mozna CE_COUNT(0) -zkusit
 
 
-	change_row: process(RESET, CE, SMCLK)		--mozna bude potreba pouzit jeste SMCLK a synchronizovat
+	change_row: process (RESET, CE, SMCLK)
 	begin
-		if (SMCLK'event) and (SMCLK = '1') then
-			if (RESET = '1') then
-				ROW_TMP <= "10000000"
-			elsif CE = '1' then
+		if (RESET = '1') then
+			ROW_TMP <= "10000000";
+		elsif (SMCLK'event) and (SMCLK = '1') then
+			if CE = '1' then
 				ROW_TMP <= ROW_TMP(7) & ROW_TMP(0 to 6);
 			end if;
 		end if;
-	end process active_row;
+	end process change_row;
 
 	ROW <= ROW_TMP;
 
